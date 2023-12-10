@@ -24,16 +24,23 @@ function init(){
 
 function buildCharts(sample){
     d3.json(url).then(data => {
-       
+        // declare values for graph:
         let sampleValues = data.sample_values;
         let otuIds = data.otu_ids;
         let title = 'Top 10 OTUs'
 
-        
+        // declare top 10 values and IDs:
+        let topSampleValues = sampleValues.slice(0, 10);
+        console.log(topSampleValues);
+        let topOtuIds = otuIds.slice(0, 10);
+        console.log(topOtuIds);
+       
+        // graph layout
         let trace1 = {
-            x: sampleValues,
-            y: otuIds,
+            x: topSampleValues,
+            y: topOtuIds,
             type: 'bar'
+            //orientation: 'h'
         };
 
         let bar = [trace1];
@@ -45,4 +52,5 @@ function buildCharts(sample){
         Plotly.newPlot('bar', bar, layout)
     });
 };  
+
 init();
