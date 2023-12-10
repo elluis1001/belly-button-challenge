@@ -23,26 +23,26 @@ function init(){
 }
 
 function buildCharts(sample){
-    console.log(`buildChart(${sample})`);
-    
-    let sampleValues = data.sample_values;
-    let otuIds = data.otu_ids;
-    let title = 'Top 10 OTUs'
+    d3.json(url).then(data => {
+       
+        let sampleValues = data.sample_values;
+        let otuIds = data.otu_ids;
+        let title = 'Top 10 OTUs'
 
         
-    let trace1 = {
-        x: sampleValues,
-        y: otuIds,
-        type: 'bar'
-    };
+        let trace1 = {
+            x: sampleValues,
+            y: otuIds,
+            type: 'bar'
+        };
 
-    let bar = [trace1];
+        let bar = [trace1];
 
-    let layout = {
-        title: title
-    };
+        let layout = {
+            title: title
+        };
         
-    Plotly.newPlot('plot', bar, layout)
-};
-    
+        Plotly.newPlot('bar', bar, layout)
+    });
+};  
 init();
