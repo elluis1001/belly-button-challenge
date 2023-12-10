@@ -23,18 +23,23 @@ function init(){
 }
 
 function buildCharts(sample){
-    console.log(`buildChart(${sample})`);    
+    console.log(`buildChart(${sample})`);
+    
+    let sampleValues = data.sample_values;
+    let otuIds = data.otu_ids;
+    let title = 'Top 10 OTUs'
+
         
     let trace1 = {
-        x: sample_values,
-        y: otu_ids
+        x: sampleValues,
+        y: otuIds,
         type: 'bar'
     };
 
     let bar = [trace1];
 
     let layout = {
-        title = "Top 10 OTUs"
+        title: title
     };
         
     Plotly.newPlot('plot', bar, layout)
