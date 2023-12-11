@@ -28,12 +28,13 @@ function buildCharts(sample){
         let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
         let result = resultArray[0];
 
-        // declare values for graph:
+        // declare values and extract for graph:
         let sample_values = result.sample_values;
         let otu_ids = result.otu_ids;
         let title = 'Top 10 OTUs'
         let otu_labels = result.otu_labels
       
+        // trace/graph stucture:
         let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
         
         let barData = [
@@ -52,12 +53,54 @@ function buildCharts(sample){
             title: title
         };
         
+        // Plot
         Plotly.newPlot('bar', barData, layout)
     });
 };  
 
+// Create ability for the dropdown box to change values without error:
 function optionChanged(newSample) {
     d3.selectAll('#selDataset').on('change, getData')
+};
+
+// Bubble Graph:
+function buildCharts(sample){
+    d3.json(url).then(data => {
+        let samples = data.samples;
+        let resultArray = samples.filter(sampleObj => sampleObj.id === sample);
+        let result = resultArray[0];
+
+        // declare values and extract for graph:        
+        let otuIds = result.otu_ids;
+        let sampleValues = result.sample_values;
+        let otuLabels = result.otu_labels;
+        let title = 'OTU Bubble';
+
+        // trace/structure for Bubble Graph:
+        let trace = {
+            x: otuIds,
+            y: sampleValues,
+            text: otuLabels,
+            mode: 'markers',
+            marker: {
+                size: sampleValues,
+                color: otuIds,
+                colorscale: 'Earth'
+            }
+        };
+
+        // Layout:
+        let layout = {
+            title: title,
+            xaxis: {title: 'OTU ID'},
+            yaxis: {title: 'Sample Values'},
+        };
+
+        let bubbGraph = [trace];
+        
+        // Plot:
+        Plotly.newPlot('bubble', bubbGraph, layout);
+    });
 };
 
 init();
