@@ -24,33 +24,40 @@ function init(){
 
 function buildCharts(sample){
     d3.json(url).then(data => {
+        let samples = data.samples;
+        let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+        let result = resultArray[0];
+
         // declare values for graph:
-        let sampleValues = data.sample_values;
-        let otuIds = data.otu_ids;
+        let sample_values = result.sample_values;
+        let otu_ids = result.otu_ids;
         let title = 'Top 10 OTUs'
-
-        // declare top 10 values and IDs:
-        let topSampleValues = sampleValues.slice(0, 10);
-        console.log(topSampleValues);
-        let topOtuIds = otuIds.slice(0, 10);
-        console.log(topOtuIds);
-       
-        // graph layout
-        let trace1 = {
-            x: topSampleValues,
-            y: topOtuIds,
-            type: 'bar'
-            //orientation: 'h'
-        };
-
-        let bar = [trace1];
+        let otu_labels = result.otu_labels
+      
+        let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
+        
+        let barData = [
+            {
+                y: yticks,
+                x: sample_values.slice(0, 10).reverse(),
+                text: otu_labels.slice(0, 10).reverse(),
+                type: "bar",
+                orientation: "h",
+            }
+        ];
+        
+        let bar = [barData];
 
         let layout = {
             title: title
         };
         
-        Plotly.newPlot('bar', bar, layout)
+        Plotly.newPlot('bar', barData, layout)
     });
 };  
+
+function optionChanged(newSample) {
+    d3.selectAll('#selDataset').on('change, getData')
+};
 
 init();
