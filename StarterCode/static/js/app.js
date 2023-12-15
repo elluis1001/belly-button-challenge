@@ -68,9 +68,9 @@
     };  
     
     ///Create ability for the dropdown box to change values without error:
-    function optionChanged(newSample) {
-        d3.selectAll('#selDataset').on('change, getData')
-    };
+    //function optionChanged(newSample) {
+      //  d3.selectAll('#selDataset').on('change, getData')
+    //};
     
     //3.) Bubble Graph:
     function buildBubbChart(sample){
@@ -116,8 +116,9 @@
     //5.) Display each key-value pair from the metadata JSON object somewhere on the page.
     function displayMetadata(sample){
         d3.json(url).then(data => {
-            let samples = data.metadata;
-            let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+            let metadata = data.metadata;
+            //Filter through the data for disired sample number:
+            let resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
             let result = resultArray[0];
         let PANEL = d3.select("#sample-metadata");
       
@@ -130,4 +131,4 @@
         });
       }
 
-    init();
+    init(); 
