@@ -27,7 +27,7 @@
     /// Dropdown changes (function):
     function optionChanged(newSample) {
         displayMetadata(newSample);
-        buildBarChart(newSammple);
+        buildBarChart(newSample);
         buildBubbChart(newSample);
     };
 
@@ -114,23 +114,20 @@
     
     //4.) Display the sample metadata, i.e., an individual's demographic information.
     //5.) Display each key-value pair from the metadata JSON object somewhere on the page.
-    function displayMetadata() {
+    function displayMetadata(sample){
         d3.json(url).then(data => {
-            let metadata = data.metadata;
-            let metadataDisplay = d3.select("#sample-metadata");
-    
-            // Clear existing content
-            metadataDisplay.html("");
-    
-            // Iterate through metadata object:
-            metadata.forEach(metadataObj => {
-                let metadataInfo = metadataDisplay.append("div").attr("class", "panel-body");
-    
-                Object.entries(metadataObj).forEach(([key, value]) => {
-                    metadataInfo.append("p").text(`${key}: ${value}`);
-                });
-            });
+            let samples = data.metadata;
+            let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+            let result = resultArray[0];
+        let PANEL = d3.select("#sample-metadata");
+      
+        // Clear existing metadata
+        PANEL.html("");
+      
+        // Get the metadata for the selected sample
+        for (key in result){
+            PANEL.append("h6").text(`${key}: ${result[key]}`);}
         });
-    }
+      }
 
     init();
